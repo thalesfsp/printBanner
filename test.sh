@@ -45,7 +45,7 @@ export PRINTBANNERVSC="NVS";
 ./printBanner.sh "$TESTSTRING";
 unset PRINTBANNERVSC;
 
-echo "It should print an inverted text with numbers and symbols and both vertical space (without an option):";
+echo "It should print an inverted text with numbers and symbols and both vertical space (without any option):";
 ./printBanner.sh "$TESTSTRING";
 
 echo "It should print an inverted text with numbers and symbols and just top vertical space (with -t option):";
