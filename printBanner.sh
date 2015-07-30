@@ -38,61 +38,58 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 
+printBanner () {
+  ### Helper functions
 
-### Helper functions
+  # Clear the environment, good practice
+  clearEnvironment () {
+    unset printToConsole;
+    unset printErrorToConsole;
+    unset USAGE;
+    unset isTextEmpty;
+    unset clearEnvironment;
+  }
 
-# Clear the environment, good practice
-clearEnvironment () {
-  unset printToConsole;
-  unset printErrorToConsole;
-  unset USAGE;
-  unset isTextEmpty;
-  unset clearEnvironment;
-}
+  # Print to console with inverted colors option
+  #   It checks the PRINTBANNERCC variable, and if it's set,
+  #   print without the inverted color
+  # * param1: the text
+  printToConsole () {
+    if [[ "$PRINTBANNERCC" == "NIC" ]]; then
+      echo "$1";
+    else
+      tput rev;
+      echo "$1";
+      tput sgr0;
+    fi
+  }
 
-# Print to console with inverted colors option
-#   It checks the PRINTBANNERCC variable, and if it's set,
-#   print without the inverted color
-# * param1: the text
-printToConsole () {
-  if [[ "$PRINTBANNERCC" == "NIC" ]]; then
-    echo "$1";
-  else
-    tput rev;
-    echo "$1";
-    tput sgr0;
-  fi
-}
+  # Print some error to console, also echoing the usage,
+  #   cleaning the environment and exiting the function
+  #   without exit the terminal
+  # * param1: the text
+  printErrorToConsole () {
+    printToConsole "$1";
+    echo;
+    echo "$USAGE";
+    clearEnvironment;
+    kill -INT $$;
+  }
 
-# Print some error to console, also echoing the usage,
-#   cleaning the environment and exiting the function
-#   without exit the terminal
-# * param1: the text
-printErrorToConsole () {
-  printToConsole "$1";
-  echo;
-  echo "$USAGE";
-  clearEnvironment;
-  kill -INT $$;
-}
-
-# Check if some text is empty
-# * param1: the text to be checked
-# * param2: the text to be printed
-isTextEmpty () {
-  if [ -z "$1" ]; then
-    printErrorToConsole "$2";
-  fi
-}
-
-### Script start here
+  # Check if some text is empty
+  # * param1: the text to be checked
+  # * param2: the text to be printed
+  isTextEmpty () {
+    if [ -z "$1" ]; then
+      printErrorToConsole "$2";
+    fi
+  }
 
 # Holds the helper/usage text
 USAGE="Usage: printBanner [TEXT] or printBanner [OPTION] [TEXT]
 Prints [TEXT] to the terminal with inverted colors.
 
 Available options:
-
 -t, --top                  add top vertical space
 -b, --bottom               add bottom vertical space
 -tb, --top-bottom          add top and bottom vertical space
@@ -100,12 +97,10 @@ Available options:
 -h, --help                 display this help and exit
 
 Examples:
-
 printBanner -t \"Hello World\"
 printBanner --top-bottom \"Hello World\"
 
-PS:
-
+Notes:
 - Double quotes your text!
 - By default, it's add both top and bottom vertical space,
   if you don't want this behaviour, use the -nvs options or
@@ -114,56 +109,54 @@ PS:
 - By default, it's invert the terminal color,
   if you don't want this behaviour, export PRINTBANNERCC variable with NIC value.
   E.g.: export PRINTBANNERCC=NIC
-
-Notes:
-
 - VSC means Vertical Space Control and NVS means No Vertical Space.
 - CC means Color Control and NIC means No Inverted Color.";
 
-# Validate the first parameter - it should be an option or a string
-isTextEmpty "$1" "Error: Are you forgeting some option or the text?";
+  # Validate the first parameter - it should be an option or a string
+  isTextEmpty "$1" "Error: Are you forgeting some option or the text?";
 
-# Checks the environment variable presence, if yes, just print with no vertical space
-if [[ "$PRINTBANNERVSC" == "NVS" ]]; then
-  printToConsole "$1";
-elif [[ "$1" != "-"* && "$1" != "--"* ]]; then # Without any option, just print with both vertical space
-  echo;
-  printToConsole "$1";
-  echo;
-else
-  # Checks if the text is empty with the exception of the --test option
-  if [[ "$1" != "--test" ]]; then
-    isTextEmpty "$2" "Error: Are you forgeting the text?";
+  # Checks the environment variable presence, if yes, just print with no vertical space
+  if [[ "$PRINTBANNERVSC" == "NVS" ]]; then
+    printToConsole "$1";
+  elif [[ "$1" != "-"* && "$1" != "--"* ]]; then # Without any option, just print with both vertical space
+    echo;
+    printToConsole "$1";
+    echo;
+  else
+    # Checks if the text is empty with the exception of the --test option
+    if [[ "$1" != "--test" ]]; then
+      isTextEmpty "$2" "Error: Are you forgeting the text?";
+    fi
+
+    # With option, print by case
+    case "$1" in
+      -t|--top)
+        echo;
+        printToConsole "$2";
+        ;;
+      -b|--bottom)
+        printToConsole "$2";
+        echo;
+        ;;
+      -tb|--top-bottom)
+        echo;
+        printToConsole "$2";
+        echo;
+        ;;
+      -nvs|--no-vertical-space)
+        printToConsole "$2";
+        ;;
+      -h|--help)
+        echo "$USAGE";
+        ;;
+      *)
+        printErrorToConsole "Error: Invalid option $1";
+        echo ;
+        echo "$USAGE";
+        ;;
+    esac
   fi
 
-  # With option, print by case
-  case "$1" in
-    -t|--top)
-      echo;
-      printToConsole "$2";
-      ;;
-    -b|--bottom)
-      printToConsole "$2";
-      echo;
-      ;;
-    -tb|--top-bottom)
-      echo;
-      printToConsole "$2";
-      echo;
-      ;;
-    -nvs|--no-vertical-space)
-      printToConsole "$2";
-      ;;
-    -h|--help)
-      echo "$USAGE";
-      ;;
-    *)
-      printErrorToConsole "Error: Invalid option $1";
-      echo ;
-      echo "$USAGE";
-      ;;
-  esac
-fi
-
-# Clear the environment
-clearEnvironment;
+  # Clear the environment
+  clearEnvironment;
+}
