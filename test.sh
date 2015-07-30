@@ -35,27 +35,29 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 
+## Source the script
+source printBanner.sh;
+
 ### Variables
 TESTSTRING="Nice! The colors are inverted? I hope so, yeah?! 2>1<3 and 4/2+1-3=0, also [{key:value}, {key:value}] is an array of objects.";
 
 ### Script starts here
-
 echo "It should print an inverted text with numbers and symbols with no vertical space (by setting PRINTBANNERVSC to NVS):";
 export PRINTBANNERVSC="NVS";
-./printBanner.sh "$TESTSTRING";
+printBanner "$TESTSTRING";
 unset PRINTBANNERVSC;
 
 echo "It should print an inverted text with numbers and symbols and both vertical space (without any option):";
-./printBanner.sh "$TESTSTRING";
+printBanner "$TESTSTRING";
 
 echo "It should print an inverted text with numbers and symbols and just top vertical space (with -t option):";
-./printBanner.sh -t "$TESTSTRING";
+printBanner -t "$TESTSTRING";
 
 echo "It should print an inverted text with numbers and symbols and just bottom vertical space (with -b option):";
-./printBanner.sh -b "$TESTSTRING";
+printBanner -b "$TESTSTRING";
 
 echo "It should print an inverted text with numbers and symbols with no vertical space (with -nvs option):";
-./printBanner.sh -nvs "$TESTSTRING";
+printBanner -nvs "$TESTSTRING";
 
 # Clear the environment, good practice
 unset TESTSTRING;
