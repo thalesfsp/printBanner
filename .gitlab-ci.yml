@@ -1,0 +1,14 @@
+# Jobs: Allows you to specify an unlimited number of jobs. Each job has to have 
+# a unique job_name, which is not one of the keywords mentioned above. A job is
+# defined by a list of parameters that define the build behaviour.
+# Each line runs in parallel
+test:
+  type: test
+  script:
+    - sh test.sh
+  only:
+    - master
+  except:
+    - develop
+  tags:
+    - all
