@@ -16,13 +16,8 @@ Prints the given text to the output/console with inverted colors options and ver
 *Note: The [Text] should be single quoted*
 
 ## How to use?
-- Directly in the terminal (including the source in your `.bash_profile` or `.bashrc` via `source printBanner.sh`)
-	- `printBanner -t "Helo World"`
-- Directly in the terminal (the script should be **755**! In case not, run `chmod a+x printBanner.sh`)
-	- `sh printBanner -t "Hello World"`
-	- `./printBanner -t "Hello World"`
-- In any script (via `source printBanner.sh`)
-	- `printBanner -t "Helo World"`
+
+You can import **printBanner** (`source printBanner.sh`) into any script or use directly in the terminal, in this case you will need to source the script into your `.bash_profile` or `.bashrc` (it depends on the OS).
 
 ## Available Options
 
