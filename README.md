@@ -31,3 +31,7 @@ Prints the given text to the output/console with inverted colors options and ver
 - `-tb`, `--top-bottom`: add top and bottom vertical space
 - `-nvs`|`--no-vertical-space`: print the text without any vertical space
 - `-h`, `--help`: display the help text
+
+## Tests
+
+Run `sh test.sh` or `./test.sh`
