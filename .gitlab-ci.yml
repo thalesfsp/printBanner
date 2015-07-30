@@ -9,7 +9,7 @@ before_script:
 test:
   type: test
   script:
-    - sh test.sh
+    - ./test.sh
   only:
     - master
   except:
