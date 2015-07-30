@@ -36,7 +36,7 @@
 # SUCH DAMAGE.
 
 ## Source the script
-source printBanner.sh;
+# source printBanner.sh;
 
 ### Variables
 TESTSTRING="Nice! The colors are inverted? I hope so, yeah?! 2>1<3 and 4/2+1-3=0, also [{key:value}, {key:value}] is an array of objects.";
