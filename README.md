@@ -30,8 +30,3 @@ You can import **printBanner** (`source printBanner.sh`) into any script or use 
 ## Tests
 
 Run `sh test.sh` or `./test.sh`.
-
-.
-.
-.
-.2
